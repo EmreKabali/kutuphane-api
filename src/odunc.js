@@ -1,11 +1,25 @@
-import { uyeGetir, stokAzalt, stokDegistir, oduncKayitlari } from './db.js';
+import { uyeGetir, kitapGetir, stokDegistir, oduncKayitlari } from './db.js';
+
+export const UYE_BASINA_LIMIT = 3;
+
+async function aktifOduncSayisi(uyeId) {
+  return oduncKayitlari.filter((k) => k.uyeId === uyeId && k.aktif).length;
+}
 
 export async function oduncVer(uyeId, kitapId) {
   const uye = await uyeGetir(uyeId);
   if (!uye) throw new Error('Üye bulunamadı');
 
-  const basarili = await stokAzalt(kitapId);
-  if (!basarili) throw new Error('Kitap stokta yok');
+  const kitap = await kitapGetir(kitapId);
+  if (!kitap) throw new Error('Kitap bulunamadı');
+  if (kitap.stok < 1) throw new Error('Kitap stokta yok');
+
+  const aktif = await aktifOduncSayisi(uyeId);
+  if (aktif >= UYE_BASINA_LIMIT) {
+    throw new Error(`Üye aynı anda en fazla ${UYE_BASINA_LIMIT} kitap ödünç alabilir`);
+  }
+
+  await stokDegistir(kitapId, -1);
 
   const kayit = { uyeId, kitapId, tarih: new Date().toISOString(), aktif: true };
   oduncKayitlari.push(kayit);
