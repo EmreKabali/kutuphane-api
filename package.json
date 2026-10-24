@@ -1,0 +1,15 @@
+{
+  "name": "kutuphane-api",
+  "version": "1.0.0",
+  "description": "Copilot CLI demo projesi: küçük bir kütüphane ödünç API'si",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "MIT"
+}
