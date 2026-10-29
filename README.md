@@ -29,4 +29,5 @@ curl -X POST localhost:3000/odunc -d '{"uyeId":"u1","kitapId":"k2"}'
 
 - Stokta olmayan kitap ödünç verilemez.
 - Olmayan bir üyeye ödünç verilmez.
+- Bir üye ayni anda en fazla 3 kitap ödünç alabilir.
 - İade edilen kitabin stoğu bir artar.
